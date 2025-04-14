@@ -24,6 +24,12 @@ const MyMapComponent = () => {
 
   useEffect(() => {
     fetchISS();
+
+    const interval = setInterval(() => {
+      fetchISS();
+    }, 10000)
+
+    return () => clearInterval(interval)
   }, []);
 
   console.log(loading)
@@ -32,7 +38,7 @@ const MyMapComponent = () => {
 
   return (
     <div>
-    <MapContainer center={issPosition} zoom={7} scrollWheelZoom={false} style={{ width: "600px", height: "600px"}}>
+    <MapContainer center={issPosition} zoom={5} scrollWheelZoom={false} style={{ width: "600px", height: "600px"}}>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
