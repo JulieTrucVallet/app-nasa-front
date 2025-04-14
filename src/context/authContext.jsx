@@ -1,14 +1,15 @@
 import axios from 'axios'
 import { createContext, useEffect, useState } from 'react'
-//import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router'
 
 export const AuthContext = createContext(null)
 
 export const AuthController = ({children}) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
+    let navigate = useNavigate()
 
     useEffect(() => {
-        let token = localStorage.getItem('token')
+        const token = localStorage.getItem('token')
         if(token) {
             setIsAuthenticated(true)
         }
@@ -18,10 +19,15 @@ export const AuthController = ({children}) => {
         e.preventDefault()
         try {
             const response = await axios.post(`http://localhost:8010/login`, { email, password })
+            const token = response.data.token
+            
             if(response.status === 200){
-                setIsAuthenticated(true)
                 alert(response.data.message)
-                //useNavigate('/')
+                if(token){
+                    localStorage.setItem('token', token)
+                    setIsAuthenticated(true)
+                    navigate('/')
+                }
             }
         }
         catch (err) {
@@ -34,7 +40,7 @@ export const AuthController = ({children}) => {
 
     const handleLogout = async () => {
         try{
-            localStorage. removeItem('token')
+            localStorage.removeItem('token')
             setIsAuthenticated(false)
         }
         catch(err){
