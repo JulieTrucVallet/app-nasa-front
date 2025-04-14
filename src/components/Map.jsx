@@ -32,7 +32,7 @@ const MyMapComponent = () => {
     return () => clearInterval(interval)
   }, []);
 
-  console.log(loading)
+  //console.log(loading)
 
   if(loading) return <p>Loading...</p>
 
